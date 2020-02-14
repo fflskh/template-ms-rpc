@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+const { RpcServer } = require("sofa-rpc-node").server;
+const { ZookeeperRegistry } = require("sofa-rpc-node").registry;
+const config = require("config");
+const controllers = require("../controllers");
+
+const logger = console;
+const rpcServerPort = config.get("rpcServerPort");
+const zkRegistry = config.get("zkRegistry");
+
+// 1. 创建 zk 注册中心客户端
+const registry = new ZookeeperRegistry({
+  logger,
+  address: zkRegistry // 需要本地启动一个 zkServer
+});
+
+// 2. 创建 RPC Server 实例
+const server = new RpcServer({
+  logger,
+  registry, // 传入注册中心客户端
+  port: rpcServerPort
+});
+
+// 3. 添加服务
+server.addService(
+  {
+    interfaceName: "com.gioneco.ms.test"
+  },
+  controllers
+);
+
+// 4. 启动 Server 并发布服务
+server.start()
+.then(() => {
+  return server.publish();
+}).then(() => {
+  logger.info(`rpc server started, listen on port ${rpcServerPort}`);
+}).catch(error => {
+  logger.error(`rpc server start failed, error: ${error.stack}`);
+});
+
+
