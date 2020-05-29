@@ -1,3 +1,4 @@
 module.exports = {
-  TestService: require("./test")
+  TestService: require("./test"),
+  UserService: require("./user")
 };

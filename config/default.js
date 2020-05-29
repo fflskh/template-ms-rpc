@@ -2,7 +2,7 @@ module.exports = {
   db: {
     username: "root",
     password: "12345678",
-    database: "xxxx",
+    database: "cd_brt_development",
     host: "127.0.0.1",
     port: "3306",
     dialect: "mysql",

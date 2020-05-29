@@ -24,7 +24,7 @@ const server = new RpcServer({
 // 3. 添加服务
 server.addService(
   {
-    interfaceName: "com.gioneco.ms.test"
+    interfaceName: "com.gioneco.ms.user"
   },
   controllers
 );

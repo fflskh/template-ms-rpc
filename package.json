@@ -23,7 +23,13 @@
       "git add"
     ]
   },
-  "keywords": ["node", "ms", "micro", "service", "rpc"],
+  "keywords": [
+    "node",
+    "ms",
+    "micro",
+    "service",
+    "rpc"
+  ],
   "prettier": {
     "printWidth": 120
   },
@@ -46,7 +52,9 @@
     "redlock": "^4.1.0",
     "sequelize": "^5.21.4",
     "sequelize-cli": "^5.5.1",
-    "sofa-rpc-node": "^1.16.0"
+    "sofa-rpc-node": "^1.16.0",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.4.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.2",

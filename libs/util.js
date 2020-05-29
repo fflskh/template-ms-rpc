@@ -84,18 +84,6 @@ class Util {
     ciph += cipher.final("utf8");
     return ciph;
   }
-  buildDbLogging(log) {
-    return (sqlLogText, costMs, options) => {
-      const { bizName } = options; // 用于定位sql业务 db.sequelize.transaction({bizName:"测试业务"});
-      if (costMs >= config.get("slowSqlMillis")) {
-        log.biz.warn(`${sqlLogText},${costMs}ms,${bizName}`);
-      } else if (bizName) {
-        log.biz.debug(`${sqlLogText},${costMs}ms,${bizName}`);
-      } else {
-        log.biz.debug(`${sqlLogText},${costMs}ms`);
-      }
-    };
-  }
   encryptAseCert(str) {
     const secret = config.get("certAseSecret");
     const iv = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
