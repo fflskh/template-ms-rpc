@@ -18,7 +18,7 @@ function buildDbLogging(log) {
 module.exports = {
   buildDbLogging: buildDbLogging,
   async getTransaction(ctx, tsName = "") {
-    const requestId = ctx.requestId || (ctx.header && ctx.header["x-request-id"]) || "";
+    const requestId = ctx.requestId;
     const dbLogger = baseLog.getReqIdLogger(requestId, "db");
     const dbLogging = buildDbLogging(dbLogger.db);
 

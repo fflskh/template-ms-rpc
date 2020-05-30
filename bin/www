@@ -1,42 +1,48 @@
-#!/usr/bin/env node
-const { RpcServer } = require("sofa-rpc-node").server;
-const { ZookeeperRegistry } = require("sofa-rpc-node").registry;
 const config = require("config");
-const controllers = require("../controllers");
+const { GrpcServer, ServiceRegistry } = require("gioneco-grpc");
 
-const logger = console;
-const rpcServerPort = config.get("rpcServerPort");
-const zkRegistry = config.get("zkRegistry");
+const register = new ServiceRegistry(config.get("consul"));
 
-// 1. 创建 zk 注册中心客户端
-const registry = new ZookeeperRegistry({
-  logger,
-  address: zkRegistry // 需要本地启动一个 zkServer
-});
+const ctrl = require("../controllers/index");
+const baseLog = require("../log");
 
-// 2. 创建 RPC Server 实例
-const server = new RpcServer({
-  logger,
-  registry, // 传入注册中心客户端
-  port: rpcServerPort
-});
+const grpcServer = new GrpcServer({
+  protosDir: `${process.cwd()}/protos`,
+  serviceFunctionMap: {
+    //package.function
+    "user.addUser"(call, callback) {
+      const requestId = call.request.header.requestId || "";
+      const logger = baseLog.getReqIdLogger(requestId, "biz");
 
-// 3. 添加服务
-server.addService(
-  {
-    interfaceName: "com.gioneco.ms.user"
+      // logger.biz.info({
+      console.log({
+        message: ">>>>> request",
+        data: call.request
+      });
+
+      //执行rpc方法
+      ctrl.exec("user.addUser", call.request).then(resp => {
+        logger.biz.info({
+          message: "<<<<<< response",
+          data: resp
+        });
+
+        callback(null, resp);
+      }).catch(error => {
+        logger.biz.error({
+          message: "rpc process error",
+          error: error.stack
+        });
+        callback(null, error);
+      });
+    }
   },
-  controllers
-);
-
-// 4. 启动 Server 并发布服务
-server.start()
-.then(() => {
-  return server.publish();
-}).then(() => {
-  logger.info(`rpc server started, listen on port ${rpcServerPort}`);
-}).catch(error => {
-  logger.error(`rpc server start failed, error: ${error.stack}`);
+  registry: register,
+  checkServiceHealthOptions: {
+    checkServerPort: config.get("consulHealthPort")
+  }
 });
 
-
+grpcServer.ready().catch(error => {
+  console.error("rpc启动失败，error：", error.stack);
+});

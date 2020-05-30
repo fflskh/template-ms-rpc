@@ -20,6 +20,14 @@ module.exports = {
     port: "6379",
     db: 10
   },
+  //consul配置
+  consul: {
+    host: "127.0.0.1",
+    port: 8500,
+    promisify: true
+  },
+  //consul健康监测HTTP端口
+  consulHealthPort: 8124,
   timerRules: {
     test: {
       enable: true,
@@ -31,8 +39,5 @@ module.exports = {
   appName: "xxxx",
   slowSqlMillis: 1000,
   //运营日时间
-  operationalDay: "03:00",
-  //zookeeper地址
-  zkRegistry: "127.0.0.1:2181",
-  rpcServerPort: 8080
+  operationalDay: "03:00"
 };

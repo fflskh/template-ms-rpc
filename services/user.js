@@ -1,8 +1,8 @@
 const Base = require("./base");
 
 class User extends Base {
-  constructor(ctx) {
-    super(ctx);
+  constructor(rpcParams) {
+    super(rpcParams);
   }
 
   async addUser(data) {
@@ -10,6 +10,8 @@ class User extends Base {
       message: "add user params",
       data: data
     });
+
+    // this.grpcClient.invoke();
 
     const createResult = await this.db.user.findOrCreate({
       where: {
