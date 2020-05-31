@@ -1,3 +1,4 @@
+const config = require("config");
 const Util = require("../libs/util");
 const db = require("../models");
 const baseLog = require("../log");

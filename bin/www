@@ -2,7 +2,7 @@
 const { RpcServer } = require("sofa-rpc-node").server;
 const { ZookeeperRegistry } = require("sofa-rpc-node").registry;
 const config = require("config");
-const controllers = require("../controllers");
+const ctrl = require("../controllers");
 
 const logger = console;
 const rpcServerPort = config.get("rpcServerPort");
@@ -26,7 +26,11 @@ server.addService(
   {
     interfaceName: "com.gioneco.ms.user"
   },
-  controllers
+  {
+    "user.add": async (rpcParams) => {
+      ctrl.exec("user", "add", rpcParams);
+    }
+  }
 );
 
 // 4. 启动 Server 并发布服务

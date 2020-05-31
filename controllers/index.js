@@ -1,16 +1,15 @@
-const fs = require("fs");
-const path = require("path");
-const constants = {};
-const basename = path.basename(__filename);
+/**
+ * serviceName - 服务名称，同controller文件名
+ * funcName - rpc方法名称
+ * rpcParams - rpc方法参数
+ */
+exports.exec = async function(serviceName, funcName, rpcParams) {
+  // const args = serviceName.split(".");
+  // if (args.length !== 2) {
+  //   throw new Error("服务名称参数错误");
+  // }
 
-fs.readdirSync(__dirname)
-  .filter(file => {
-    return file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js";
-  })
-  .forEach(file => {
-    let constant = require(path.join(__dirname, file));
-    for (let key of Object.keys(constant)) {
-      constants[key] = constant[key];
-    }
-  });
-module.exports = constants;
+  // const [ctrlFile, funcName] = args;
+  let Ctrl = require(`${process.cwd()}/controllers/${serviceName}`);
+  return await new Ctrl(rpcParams)[funcName](rpcParams);
+};
