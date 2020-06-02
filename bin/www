@@ -26,11 +26,7 @@ server.addService(
   {
     interfaceName: "com.gioneco.ms.user"
   },
-  {
-    "user.add": async (rpcParams) => {
-      ctrl.exec("user", "add", rpcParams);
-    }
-  }
+  ctrl.generateRpcFuncMap()
 );
 
 // 4. 启动 Server 并发布服务

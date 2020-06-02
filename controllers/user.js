@@ -1,5 +1,3 @@
-/* eslint-disable require-atomic-updates */
-/* eslint-disable require-atomic-updates */
 const { RES_CODE } = require("../constants");
 const { UserService } = require("../services");
 const dbUtil = require("../libs/dbUtil");
