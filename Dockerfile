@@ -1,14 +1,9 @@
-FROM 127.0.0.1:9090/baseimage:v1
-RUN mkdir -p /user/home/ms-base
-WORKDIR /user/home/ms-base/
-COPY . /user/home/ms-base
+FROM 10.255.50.25:9090/library/basenode:v2
+WORKDIR /user/home/tyacc-ms-gateway
+COPY package.json .
 
-RUN npm config set unsafe-perm true
+RUN npm config set registry https://registry.npm.taobao.org
 RUN npm install --production 
-RUN npm install -g sequelize-cli
 
-EXPOSE 3000
-ENV NODE_ENV tytest
-RUN sequelize db:migrate
-RUN sequelize db:seed:all
-CMD node bin/www
+COPY . /user/home/tyacc-ms-gateway
+CMD [ "pm2-runtime", "start", "pm2config/ecosystem.config.js" ]
