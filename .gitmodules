@@ -1,0 +1,6 @@
+[submodule "models"]
+	path = models
+	url = ssh://git@gitssh.cnzhiyuanhui.com:32121/ty-metro/backend/tyacc-submodule-models.git
+[submodule "constants"]
+	path = constants
+	url = ssh://git@gitssh.cnzhiyuanhui.com:32121/ty-metro/backend/tyacc-submodule-constans.git
